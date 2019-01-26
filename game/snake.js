@@ -23,7 +23,7 @@ class Snake {
                 break;
             case Directions.RIGHT:
                 newHeadPos.x = this.snakeHeadPos.x + 1;
-                if (newHeadPos.x > this.maxUnitsWidth) newHeadPos.x = 0;
+                if (newHeadPos.x >= this.maxUnitsWidth) newHeadPos.x = 0;
                 break;
         }
 
