@@ -1,0 +1,364 @@
+@import "https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css";
+@import url('https://fonts.googleapis.com/css?family=Montserrat');
+
+body {
+    font-family: Montserrat;
+    font-size: 16px;
+    margin: 0;
+}
+
+.site-header {
+    background: url('files/layer.jpg');
+    background-size: cover;
+    color: white;
+    text-align: center;
+    min-height: 500px;
+}
+
+.site-header a {
+    text-decoration: none;
+    color: white;
+}
+
+.navigation {
+    display: inline-block;
+    margin: 30px auto 0;
+    width: 80%;
+}
+
+.navigation ul {
+    background: rgba(187, 148, 93, 0.7);
+    text-align: center;
+    padding: 0;
+    margin: 0;
+}
+
+.navigation li {
+    display: inline-block;
+    padding: 20px;
+}
+
+.site-header a:hover {
+    color: black;
+}
+
+.video-slider h1 {
+    color: white;
+    text-transform: uppercase;
+    text-shadow: 0px 0px 10px black;
+    font-size: 3em;
+    margin-top: 70px;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.text-header p {
+    color: white;
+    width: 300px;
+    margin: 0 auto;
+    padding: 10px;
+    background: rgba(150, 150, 150, 0.1);
+    box-shadow: 0px 0px 15px 15px rgba(150, 150, 150, 0.1);
+    text-shadow: 0px 0px 10px black;
+}
+
+.button {
+    margin-top: 30px;
+    display: inline-block;
+    border-radius: 5px;
+    background-color: black;
+    padding: 10px;
+    text-transform: uppercase;
+    box-shadow: 2px 2px 5px rgba(150, 150, 150, 0.4);
+}
+
+.button:hover {
+    background-color: rgba(187, 148, 93, 1);
+}
+
+.fa-chevron-right {
+    color: orange;
+}
+
+.waddup {
+    text-align: center;
+}
+
+.industries {
+    text-align: center;
+    max-width: 1300px;
+    margin: 0 auto;
+    padding-bottom: 30px;
+}
+
+.industries h1 {
+    font-size: 3em;
+}
+
+section .our-offers {
+    width: 400px;
+    margin: 10px;
+    display: inline-block;
+}
+
+.industries .icon {
+    width: 45px;
+    height: 45px;
+    line-height: 45px;
+    font-size: 2em;
+    background: black;
+    color: white;
+    border-radius: 50%;
+    float: left;
+    vertical-align: bottom;
+}
+
+.fa-plane, .fa-shopping-cart, .fa-line-chart {
+    color: white;
+    margin-top: 10px;
+}
+
+.text {
+    margin-left: 64px;
+    text-align: left;
+    font-size: 0.85em;
+    vertical-align: top;
+}
+
+.mission {
+    background: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url('files/steel.jpg');
+    background-size: cover;
+    text-align: center;
+    margin: 0 auto;
+    height: 140px;
+}
+
+.gg {
+    margin-top: 10px;
+    border: 1px red;
+    display: inline-block;
+}
+
+.mission h1 {
+    font-size: 1.5em;
+    color: rgba(187, 148, 93, 1);
+    text-shadow: 1px 1px black;
+}
+
+.pp {
+    color: black;
+    font-size: 0.9em;
+    margin-bottom: 20px;
+    text-shadow: 0px 0px black;
+}
+
+.pros {
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('files/why.jpg');
+    background-size: cover;
+    min-height: 300px;
+    text-align: center;
+    color: white;
+    margin-top: -20px;
+    padding-bottom: 20px;
+    padding-top: 20px;
+}
+
+.pros h1 {
+    font-size: 2em;
+}
+
+.pros a {
+    text-decoration: none;
+    color: white;
+}
+
+.our-pros {
+    display: inline-block;
+    border: 2px rgba(187, 148, 93, 1) solid;
+    width: 320px;
+    height: 190px;
+    margin: 20px;
+    color: white;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.our-pros p {
+    text-align: left;
+}
+
+.our-pros:hover {
+    background-color: white;
+    color: black;
+}
+
+.opinion {
+    text-align: right;
+    background: url('files/consulting-woman.jpg');
+    background-size: cover;
+    min-height: 400px;
+    padding: 30px;
+}
+
+.opinion-box {
+    display: inline-block;
+    width: 360px;
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 35px;
+    text-align: left;
+}
+
+.opinion-other {
+    display: inline-block;
+    padding: 5px;
+    width: 100%;
+    background-color: #080820;
+    color: white;
+    height: 300px;
+}
+
+.opinion-other p {
+    text-align: right;
+    font-size: 0.6em;
+}
+
+.opinion-other h1 {
+    font-size: 1.3em;
+}
+
+.supports {
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+
+}
+
+.logos {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.site-footer {
+    background-color: #080820;
+    min-height: 240px;
+    text-align: center;
+    max-height: 800px;
+    vertical-align: top;
+    padding: 50px;
+    padding-top: 25px;
+}
+
+.site-footer a {
+    text-decoration: none;
+    color: rgba(187, 148, 93, 1);
+}
+
+.site-footer h1 {
+    color: white;
+}
+
+.site-footer ul {
+    text-decoration: none;
+}
+
+.site-footer li {
+    text-decoration: none;
+    display: block;
+    clear: both;
+}
+
+.site-footer p {
+    color: white;
+}
+
+.footer-section {
+    display: inline-block;
+    text-align: left;
+    width: 250px;
+    vertical-align: top;
+    float: left;
+    font-size: 0.9em;
+}
+
+.footer-section2 {
+    display: inline-block;
+    text-align: left;
+    width: 290px;
+    font-size: 0.8em;
+    vertical-align: top;
+}
+
+.footer-section2 li {
+    margin-top: 7px;
+}
+
+.footer-section2 a:hover {
+    color: white;
+
+}
+
+.footer-section3 {
+    display: inline-block;
+    text-align: left;
+    vertical-align: top;
+    float: right;
+}
+
+#leftlinks {
+    float: left;
+}
+
+#rightlinks {
+    float: right;
+}
+
+.instagram {
+    width: 320px;
+    height: 200px;
+
+}
+
+.instagram li {
+    display: inline-block;
+}
+
+.socials {
+    display: inline-block;
+    background-color: gray;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    vertical-align: bottom;
+}
+
+.linkhold {
+    font-size: 1.2em;
+    text-align: center;
+}
+
+.fa-facebook, .fa-twitter, .fa-linkedin, .fa-youtube {
+    display: inline-block;
+    vertical-align: bottom;
+    margin-top: 10px;
+}
+
+.linkhold a {
+    color: black;
+}
+
+.linkhold a:hover {
+    color: rgba(187, 148, 93, 1);
+}
+
+.socials:hover {
+    background-color: black;
+}
+
+
+
+
+
+
+
+
+
