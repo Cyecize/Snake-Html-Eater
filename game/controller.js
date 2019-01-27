@@ -15,7 +15,8 @@ class Controller {
 
     _loopGame() {
         if (this.isGameRunning) {
-            this.drawer.printSnakeBody();
+            this.levelManager.update();
+            this.drawer.draw();
             window.requestAnimationFrame(this._loopGame.bind(this));
         }
     }
@@ -24,7 +25,8 @@ class Controller {
         this.units = Utils.calculateUnits(GameConstants.SNAKE_PARTICLE_SIZE, PageConstants.PAGE_WIDTH(), PageConstants.PAGE_HEIGHT(), false);
         this.snake = new Snake(GameConstants.SNAKE_PARTICLE_SIZE, this.units.width, this.units.height);
         this.objectMapper = new ObjectMapper();
-        this.drawer = new SnakeDrawer(this.snake);
+        this.levelManager = new LevelManager(this.objectMapper.mappedObjects, this.snake);
+        this.drawer = new SnakeDrawer(this.snake, this.levelManager);
     }
 
     _initEvents() {

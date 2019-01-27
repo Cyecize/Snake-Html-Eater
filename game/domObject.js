@@ -10,7 +10,8 @@ class DomObject {
     }
 
     hide() {
-
+        this.DOMReference.style.visibility = 'hidden';
+        this.isHidden = true;
     }
 
     get DOMReference() {
