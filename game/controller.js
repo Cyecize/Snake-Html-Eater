@@ -21,7 +21,7 @@ class Controller {
     }
 
     _init() {
-        this.units = Utils.calculateUnitsForPage(GameConstants.SNAKE_PARTICLE_SIZE, PageConstants.PAGE_WIDTH(), PageConstants.PAGE_HEIGHT());
+        this.units = Utils.calculateUnits(GameConstants.SNAKE_PARTICLE_SIZE, PageConstants.PAGE_WIDTH(), PageConstants.PAGE_HEIGHT());
         this.snake = new Snake(GameConstants.SNAKE_PARTICLE_SIZE, this.units.width, this.units.height);
         this.objectMapper = new ObjectMapper(this.units);
         this.drawer = new SnakeDrawer(this.snake);
@@ -46,11 +46,10 @@ class Controller {
         }.bind(this));
 
         window.addEventListener('resize', function () {
-            this.units = Utils.calculateUnitsForPage(GameConstants.SNAKE_PARTICLE_SIZE, PageConstants.PAGE_WIDTH(), PageConstants.PAGE_HEIGHT());
+            this.units = Utils.calculateUnits(GameConstants.SNAKE_PARTICLE_SIZE, PageConstants.PAGE_WIDTH(), PageConstants.PAGE_HEIGHT());
             this.snake.setNewUnitValues(this.units.width, this.units.height);
         }.bind(this));
     }
-
 }
 
 new Controller().run();

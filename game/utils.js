@@ -24,10 +24,23 @@ class Utils {
         return this._finalizeDOMSnakeBody(DOMElement);
     }
 
-    static calculateUnitsForPage(snakeParticleSize, screenWidth, screenHeight) {
+    static calculateUnits(snakeParticleSize, screenWidth, screenHeight) {
         return {
             width: Math.floor(screenWidth / snakeParticleSize),
             height: Math.floor(screenHeight / snakeParticleSize),
         };
+    }
+
+    static calculateUnitsForDOMElement(snakeParticleSize, boundingClientRect) {
+        return this.calculateUnits(snakeParticleSize, boundingClientRect.width, boundingClientRect.height);
+    }
+
+    static calculateUnitsForCoordinates(snakeParticleSize, xAxis, yAxis) {
+        let units = this.calculateUnits(snakeParticleSize, xAxis, yAxis);
+        return new Point(units.width, units.height);
+    }
+
+    static isDOMElementVisible(elem) {
+        return elem.offsetParent !== null;
     }
 }

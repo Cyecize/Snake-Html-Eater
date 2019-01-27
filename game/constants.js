@@ -18,6 +18,7 @@ const StyleConstants = {
 const GameConstants = {
     SNAKE_PARTICLE_SIZE: 18,
     SNAKE_REFRESH_MILLIS: 50,
+    UNMAPPED_HTML_TAGS: ['HTML', 'HEAD', 'LINK', 'SCRIPT', 'STYLE', 'BODY'],
 };
 
 const Directions = {
