@@ -64,7 +64,6 @@ class LevelManager {
         this.snake = snake;
         this._init();
         this._levelUp();
-        this._levelUp();
     }
 
     update() {
@@ -77,15 +76,28 @@ class LevelManager {
                 collision.DOMObject.hide();
                 this.snake.addFood();
                 this.currentPoints += this.tagPointsMap[collision.tag];
-
-                if (this.currentPoints >= this.level.pointsToAdvance) {
-                    this._levelUp();
-                }
             }
         }
 
         //check for text collisions
+        let otherCollisions = CollisionUtils.getCollidingDOMObjects(this.unwatchedTagsArr, this.snake.snakeHeadPos);
+        for (let collision of otherCollisions) {
+            let domElement = collision.DOMObject.DOMReference;
+            let snakeHeadDOMElement = this.snake.snakeHeadDOMElement;
 
+            let textNode = Array.from(domElement.childNodes).filter(node => node.nodeName === '#text').pop();
+            if (textNode) {
+                let res = CollisionUtils.findClickedWord(textNode, snakeHeadDOMElement);
+                if (res) {
+                    textNode.textContent = textNode.textContent.replace(res[0], ' ');
+                    this.currentPoints += 1;
+                }
+            }
+        }
+
+        if (this.currentPoints >= this.level.pointsToAdvance) {
+            this._levelUp();
+        }
     }
 
     _levelUp() {
@@ -102,6 +114,9 @@ class LevelManager {
                 delete this.unwatchedTagsMap[foodType.tag];
             }
         }
+
+        //update unwatchedTagsArr here to save performance
+        Object.keys(this.unwatchedTagsMap).forEach(key => this.unwatchedTagsArr = this.unwatchedTagsArr.concat(this.unwatchedTagsMap[key]));
     }
 
     _init() {
@@ -111,6 +126,7 @@ class LevelManager {
         this.levels = Object.keys(Levels).reverse();
 
         this.unwatchedTagsMap = [];
+        this.unwatchedTagsArr = [];
         for (let tagName in this.mappedObjects) {
             this.unwatchedTagsMap[tagName] = this.mappedObjects[tagName];
         }
