@@ -24,11 +24,20 @@ class Utils {
         return this._finalizeDOMSnakeBody(DOMElement);
     }
 
-    static calculateUnits(snakeParticleSize, screenWidth, screenHeight) {
-        return {
-            width: Math.floor(screenWidth / snakeParticleSize),
-            height: Math.floor(screenHeight / snakeParticleSize),
+    static calculateUnits(snakeParticleSize, screenWidth, screenHeight, skipFloor = true) {
+        let units = {
+            width: screenWidth / snakeParticleSize,
+            height: screenHeight / snakeParticleSize,
         };
+
+        if (skipFloor) {
+            return units;
+        }
+
+        units.width = Math.floor(units.width);
+        units.height = Math.floor(units.height);
+
+        return units;
     }
 
     static calculateUnitsForDOMElement(snakeParticleSize, boundingClientRect) {

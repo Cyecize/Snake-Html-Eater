@@ -29,7 +29,7 @@ class Point2D {
         this.y2 = y2;
     }
 
-    overlaps(point) {
+    collides(point) {
         let x = point.x;
         let y = point.y;
 

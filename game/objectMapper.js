@@ -1,13 +1,17 @@
 class ObjectMapper {
-    constructor(units) {
-        this.units = units;
+    constructor() {
         this.mappedObjects = [];
         this._map();
-        console.log(this.mappedObjects);
     }
 
     update() {
-
+        for (let tagKey of Object.keys(this.mappedObjects)) {
+            for (let domObject of this.mappedObjects[tagKey]) {
+                if (Utils.isDOMElementVisible(domObject.DOMReference)) {
+                    domObject.point2D = ObjectMapper._createPoint2DFromDOMRectangle(domObject.DOMReference.getBoundingClientRect());
+                }
+            }
+        }
     }
 
     _map() {
@@ -16,23 +20,17 @@ class ObjectMapper {
         allDOMElements.forEach(element => {
             let tagName = element.tagName;
 
-            if (GameConstants.UNMAPPED_HTML_TAGS.includes(tagName)) {
+            if (GameConstants.IGNORED_HTML_TAGS.includes(tagName)) {
                 return;
             }
 
             if (!Utils.isDOMElementVisible(element)) {
-                console.log('hidden ');
-                console.log(element);
                 return;
             }
 
-            //console.log(`${tagName} -> ${element.getBoundingClientRect().x} : ${element.getBoundingClientRect().y}`);
             let elementDOMRectangle = element.getBoundingClientRect();
 
-            let widthHeightUnits = Utils.calculateUnitsForDOMElement(GameConstants.SNAKE_PARTICLE_SIZE, elementDOMRectangle);
-            let coordinatesInUnits = Utils.calculateUnitsForCoordinates(GameConstants.SNAKE_PARTICLE_SIZE, elementDOMRectangle.x, elementDOMRectangle.y);
-
-            let point2D = new Point2D(coordinatesInUnits.x, coordinatesInUnits.y, coordinatesInUnits.x + widthHeightUnits.width, coordinatesInUnits.y + widthHeightUnits.height);
+            let point2D = ObjectMapper._createPoint2DFromDOMRectangle(elementDOMRectangle);
             let domObject = new DomObject(element, point2D);
 
             if (!this.mappedObjects[tagName]) {
@@ -51,11 +49,18 @@ class ObjectMapper {
         return this._mappedObjects;
     }
 
-    set units(units) {
-        this._units = units;
+    static _createPoint2DFromDOMRectangle(elementDOMRectangle) {
+        let widthHeightUnits = ObjectMapper._calcWidthHeightUnits(elementDOMRectangle);
+        let coordinatesInUnits = ObjectMapper._calcCoordinatesInUnits(elementDOMRectangle);
+
+        return new Point2D(coordinatesInUnits.x, coordinatesInUnits.y, coordinatesInUnits.x + widthHeightUnits.width, coordinatesInUnits.y + widthHeightUnits.height);
     }
 
-    get units() {
-        return this._units;
+    static _calcWidthHeightUnits(elementDOMRectangle) {
+        return Utils.calculateUnitsForDOMElement(GameConstants.SNAKE_PARTICLE_SIZE, elementDOMRectangle);
+    }
+
+    static _calcCoordinatesInUnits(elementDOMRectangle) {
+        return Utils.calculateUnitsForCoordinates(GameConstants.SNAKE_PARTICLE_SIZE, elementDOMRectangle.x + PageConstants.PAGE_WIDTH_OFFSET(), elementDOMRectangle.y + PageConstants.PAGE_HEIGHT_OFFSET());
     }
 }

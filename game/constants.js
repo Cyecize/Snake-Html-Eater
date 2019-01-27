@@ -1,6 +1,8 @@
 const PageConstants = {
     PAGE_WIDTH: () => document.documentElement.scrollWidth,
     PAGE_HEIGHT: () => document.documentElement.scrollHeight,
+    PAGE_WIDTH_OFFSET: () => window.pageXOffset,
+    PAGE_HEIGHT_OFFSET: () => window.pageYOffset,
     ELEMENT_SIZE_DIMENSION_TYPE: 'px',
 };
 
@@ -18,7 +20,7 @@ const StyleConstants = {
 const GameConstants = {
     SNAKE_PARTICLE_SIZE: 18,
     SNAKE_REFRESH_MILLIS: 50,
-    UNMAPPED_HTML_TAGS: ['HTML', 'HEAD', 'LINK', 'SCRIPT', 'STYLE', 'BODY'],
+    IGNORED_HTML_TAGS: ['HTML', 'HEAD', 'LINK', 'SCRIPT', 'STYLE', 'BODY'],
 };
 
 const Directions = {

@@ -5,8 +5,8 @@ class DomObject {
         this.isHidden = false;
     }
 
-    overlaps(point) {
-        return this.point2D.overlaps(point);
+    collides(point) {
+        return this.point2D.collides(point);
     }
 
     hide() {
