@@ -1,0 +1,14 @@
+The file appender will help you make a compiled version of the game so you can run it in the browser.
+
+First run the app... a console will open saying that you should ender base directory.
+	-> Enter the directory where the js files are located.
+	
+Then you will see a message saying enter names in format f1.txt......
+	-> Enter the file names in the order of depencendy, example: 
+	
+constants.js, point.js, utils.js, domObject.js, objectMapper.js, snake.js, collision.js, levelManager.js, drawer.js, controller.js
+
+Then you will see a message asking for a file name in which the output will be stored.
+	-> Enter output.js for example and press enter.
+	
+You will see a new file called output.js in the same folder that you've entered on the first line.
