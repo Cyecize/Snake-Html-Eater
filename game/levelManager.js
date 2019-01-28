@@ -89,8 +89,9 @@ class LevelManager {
             if (textNode) {
                 let res = CollisionUtils.findClickedWord(textNode, snakeHeadDOMElement);
                 if (res) {
-                    textNode.textContent = textNode.textContent.replace(res[0], ' ');
+                    textNode.textContent = textNode.textContent.replace(res[0], '&nbsp;'.repeat(res[0].length));
                     this.currentPoints += 1;
+					this.snake.addFood();
                 }
             }
         }
