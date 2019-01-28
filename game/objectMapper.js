@@ -50,17 +50,9 @@ class ObjectMapper {
     }
 
     static _createPoint2DFromDOMRectangle(elementDOMRectangle) {
-        let widthHeightUnits = ObjectMapper._calcWidthHeightUnits(elementDOMRectangle);
-        let coordinatesInUnits = ObjectMapper._calcCoordinatesInUnits(elementDOMRectangle);
+        let coordinates = new Point(elementDOMRectangle.x + PageConstants.PAGE_WIDTH_OFFSET(), elementDOMRectangle.y + PageConstants.PAGE_HEIGHT_OFFSET());
 
-        return new Point2D(coordinatesInUnits.x, coordinatesInUnits.y, coordinatesInUnits.x + widthHeightUnits.width, coordinatesInUnits.y + widthHeightUnits.height);
+        return new Point2D(coordinates.x, coordinates.y, coordinates.x + elementDOMRectangle.width, coordinates.y + elementDOMRectangle.height);
     }
 
-    static _calcWidthHeightUnits(elementDOMRectangle) {
-        return Utils.calculateUnitsForDOMElement(GameConstants.SNAKE_PARTICLE_SIZE, elementDOMRectangle);
-    }
-
-    static _calcCoordinatesInUnits(elementDOMRectangle) {
-        return Utils.calculateUnitsForCoordinates(GameConstants.SNAKE_PARTICLE_SIZE, elementDOMRectangle.x + PageConstants.PAGE_WIDTH_OFFSET(), elementDOMRectangle.y + PageConstants.PAGE_HEIGHT_OFFSET());
-    }
 }

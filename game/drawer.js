@@ -11,10 +11,14 @@ class SnakeDrawer {
         for (let snakeTailElement of snakeTail) {
             let coordinates = snakeTailElement.coordinates;
 
-            snakeTailElement.DOMElement.style.left = (GameConstants.SNAKE_PARTICLE_SIZE * coordinates.x) + PageConstants.ELEMENT_SIZE_DIMENSION_TYPE;
-            snakeTailElement.DOMElement.style.top = (GameConstants.SNAKE_PARTICLE_SIZE * coordinates.y) + PageConstants.ELEMENT_SIZE_DIMENSION_TYPE;
+            snakeTailElement.DOMElement.style.left = coordinates.x + PageConstants.ELEMENT_SIZE_DIMENSION_TYPE;
+            snakeTailElement.DOMElement.style.top = coordinates.y + PageConstants.ELEMENT_SIZE_DIMENSION_TYPE;
         }
 
+        snakeTail[0].DOMElement.scrollIntoView({block: "center"});
+    }
+
+    updateScore() {
         let level = this.levelManager.level;
 
         this.scoreboardDOM.setLevelName(level.id, level.name);
