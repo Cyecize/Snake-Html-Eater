@@ -59,31 +59,6 @@ class Utils {
         }
     }
 
-    static calculateUnits(snakeParticleSize, screenWidth, screenHeight, skipFloor = true) {
-        let units = {
-            width: screenWidth / snakeParticleSize,
-            height: screenHeight / snakeParticleSize,
-        };
-
-        if (skipFloor) {
-            return units;
-        }
-
-        units.width = Math.floor(units.width);
-        units.height = Math.floor(units.height);
-
-        return units;
-    }
-
-    static calculateUnitsForDOMElement(snakeParticleSize, boundingClientRect) {
-        return this.calculateUnits(snakeParticleSize, boundingClientRect.width, boundingClientRect.height);
-    }
-
-    static calculateUnitsForCoordinates(snakeParticleSize, xAxis, yAxis) {
-        let units = this.calculateUnits(snakeParticleSize, xAxis, yAxis);
-        return new Point(units.width, units.height);
-    }
-
     static isDOMElementVisible(elem) {
         return elem.offsetParent !== null;
     }

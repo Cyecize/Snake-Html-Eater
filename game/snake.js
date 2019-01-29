@@ -1,6 +1,6 @@
 class Snake {
-    constructor(snakeBodySize, maxWidthUnits, maxHeightUnits) {
-        this.setNewUnitValues(maxWidthUnits, maxHeightUnits);
+    constructor(snakeBodySize, maxWidth, maxHeight) {
+        this.setNewPageSize(maxWidth, maxHeight);
         this.snakeBodySize = snakeBodySize;
         this._initSnake();
     }
@@ -10,20 +10,20 @@ class Snake {
 
         switch (this.direction) {
             case Directions.UP:
-                newHeadPos.y = this.snakeHeadPos.y - 1;
-                if (newHeadPos.y < 0) newHeadPos.y = this.maxUnitsHeight - 1;
+                newHeadPos.y = this.snakeHeadPos.y - this.snakeBodySize;
+                if (newHeadPos.y < 0) newHeadPos.y = this.maxHeight - 1;
                 break;
             case Directions.DOWN:
-                newHeadPos.y = this.snakeHeadPos.y + 1;
-                if (newHeadPos.y > this.maxUnitsHeight) newHeadPos.y = 0;
+                newHeadPos.y = this.snakeHeadPos.y + this.snakeBodySize;
+                if (newHeadPos.y > this.maxHeight) newHeadPos.y = 0;
                 break;
             case Directions.LEFT:
-                newHeadPos.x = this.snakeHeadPos.x - 1;
-                if (newHeadPos.x < 0) newHeadPos.x = this.maxUnitsWidth - 1;
+                newHeadPos.x = this.snakeHeadPos.x - this.snakeBodySize;
+                if (newHeadPos.x < 0) newHeadPos.x = this.maxWidth - 1;
                 break;
             case Directions.RIGHT:
-                newHeadPos.x = this.snakeHeadPos.x + 1;
-                if (newHeadPos.x >= this.maxUnitsWidth) newHeadPos.x = 0;
+                newHeadPos.x = this.snakeHeadPos.x + this.snakeBodySize;
+                if (newHeadPos.x >= this.maxWidth) newHeadPos.x = 0;
                 break;
         }
 
@@ -60,12 +60,11 @@ class Snake {
         }
 
         this.direction = direction;
-        //this.move(); //TODO synchronize
     }
 
-    setNewUnitValues(width, height) {
-        this.maxUnitsWidth = width;
-        this.maxUnitsHeight = height;
+    setNewPageSize(width, height) {
+        this.maxWidth = width;
+        this.maxHeight = height;
     }
 
     get snakeBody() {
