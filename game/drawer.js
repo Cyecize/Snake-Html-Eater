@@ -3,19 +3,27 @@ class SnakeDrawer {
         this.snake = snake;
         this.levelManager = levelManager;
         this.scoreboardDOM = Utils.createDOMScoreboard();
+        this.previousSnakeHeadPos = this.snake.snakeBody[0];
     }
 
     draw() {
-        let snakeTail = this.snake.snakeBody.reverse();
+        const snakeTail = this.snake.snakeBody;
 
-        for (let snakeTailElement of snakeTail) {
-            let coordinates = snakeTailElement.coordinates;
+        for (const snakeTailElement of snakeTail) {
+            const coordinates = snakeTailElement.coordinates;
 
             snakeTailElement.DOMElement.style.left = coordinates.x + PageConstants.ELEMENT_SIZE_DIMENSION_TYPE;
             snakeTailElement.DOMElement.style.top = coordinates.y + PageConstants.ELEMENT_SIZE_DIMENSION_TYPE;
         }
 
-        snakeTail[0].DOMElement.scrollIntoView({block: "center"});
+        let behaviour = "smooth";
+        if (Utils.isPointsSpaceMoreThanSnakeParticle(this.previousSnakeHeadPos, snakeTail[0].coordinates)) {
+            behaviour = "instant";
+        }
+
+        snakeTail[0].DOMElement.scrollIntoView({block: "center", behavior: behaviour});
+
+        this.previousSnakeHeadPos = snakeTail[0].coordinates;
     }
 
     updateScore() {

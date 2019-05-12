@@ -19,11 +19,11 @@ class Snake {
                 break;
             case Directions.LEFT:
                 newHeadPos.x = this.snakeHeadPos.x - this.snakeBodySize;
-                if (newHeadPos.x < 0) newHeadPos.x = this.maxWidth - 1;
+                if (newHeadPos.x < 0) newHeadPos.x = this.maxWidth - 15;
                 break;
             case Directions.RIGHT:
                 newHeadPos.x = this.snakeHeadPos.x + this.snakeBodySize;
-                if (newHeadPos.x >= this.maxWidth) newHeadPos.x = 0;
+                if (newHeadPos.x >= this.maxWidth - 10) newHeadPos.x = 0;
                 break;
         }
 
@@ -35,19 +35,27 @@ class Snake {
             alert('Snake ate herself!');
         }
 
-        //Adjusts food positions.
-        let furthestFoodFromHead = this.foodStack.shift();
-        furthestFoodFromHead.coordinates = this.snakeHeadPos;
-        this.foodStack.push(furthestFoodFromHead);
-
-        //Updates the new Snake head position.
+        let currentBodyPosPartPos = this.snakeHeadPos;
         this.snakeHeadPos = newHeadPos;
+        Snake._handleBodyPartSmoothness(this.snakeHeadDOMElement, currentBodyPosPartPos, newHeadPos);
+
+        //Adjusts food positions and smoothness.
+        for (const snakeBodyPart of this.bodyStack) {
+            const oldSnakeBodyPartCoordinates = snakeBodyPart.coordinates;
+            snakeBodyPart.coordinates = currentBodyPosPartPos;
+            currentBodyPosPartPos = oldSnakeBodyPartCoordinates;
+
+            Snake._handleBodyPartSmoothness(snakeBodyPart.DOMElement, oldSnakeBodyPartCoordinates, snakeBodyPart.coordinates);
+            if (this.bodyStack.length > GameConstants.MAX_SIZE_OF_SMOOTH_SNAKE) {
+                Snake._setSmoothClassForDOMElement(snakeBodyPart.DOMElement, false);
+            }
+        }
 
         this.lastPerformedDirection = this.direction;
     }
 
     addFood() {
-        this.foodStack.unshift({
+        this.bodyStack.push({
             coordinates: new Point(-1, -1),
             DOMElement: Utils.createDOMFood()
         });
@@ -68,14 +76,14 @@ class Snake {
     }
 
     get snakeBody() {
-        return this.foodStack.concat([{
+        return this.bodyStack.concat([{
             coordinates: this.snakeHeadPos,
             DOMElement: this.snakeHeadDOMElement,
         }]);
     }
 
     _initSnake() {
-        this.foodStack = [];
+        this.bodyStack = [];
         this.direction = Directions.RIGHT;
 
         //Set snake head position.
@@ -89,12 +97,24 @@ class Snake {
     }
 
     _collidesWithSelf(newSnakePos) {
-        for (let foodStackElement of this.foodStack) {
+        for (let foodStackElement of this.bodyStack) {
             if (newSnakePos.x === foodStackElement.coordinates.x && newSnakePos.y === foodStackElement.coordinates.y) {
                 return true;
             }
         }
 
         return false;
+    }
+
+    static _handleBodyPartSmoothness(domElement, currentPoint, newPoint) {
+        Snake._setSmoothClassForDOMElement(domElement, !Utils.isPointsSpaceMoreThanSnakeParticle(currentPoint, newPoint));
+    }
+
+    static _setSmoothClassForDOMElement(domElement, isClassPresent) {
+        if (isClassPresent) {
+            domElement.classList.add(GameConstants.SMOOTH_SNAKE_CLASS_NAME);
+        } else {
+            domElement.classList.remove(GameConstants.SMOOTH_SNAKE_CLASS_NAME);
+        }
     }
 }

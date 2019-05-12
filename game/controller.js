@@ -5,64 +5,50 @@ class Controller {
     }
 
     run() {
-        this.isGameRunning = true;
-        window.requestAnimationFrame(this._loopGame.bind(this));
+        this.gameLoop = setInterval(this._loopGame.bind(this), GameConstants.SNAKE_REFRESH_MILLIS);
     }
 
-    _loopGame(time) {
-        if (time - this.gameLogicDeltaTime >= GameConstants.SNAKE_REFRESH_MILLIS) {
-            this.gameLogicDeltaTime = time;
+    _loopGame() {
+        window.requestAnimationFrame(() => {
             this.snake.move();
-            this.levelManager.update();
-            this.drawer.updateScore();
-
-            window.dispatchEvent(new Event('resize'));
-        }
-
-        if (this.isGameRunning) {
             this.drawer.draw();
-            window.requestAnimationFrame(this._loopGame.bind(this));
-        }
+        });
     }
 
     _init() {
-        this.snake = new Snake(GameConstants.SNAKE_PARTICLE_SIZE, PageConstants.PAGE_WIDTH(), PageConstants.PAGE_HEIGHT());
+        this.snake = new Snake(GameConstants.SNAKE_PARTICLE_SIZE, PageConstants.GET_PAGE_WIDTH(), PageConstants.GET_PAGE_HEIGHT());
         this.objectMapper = new ObjectMapper();
-        this.levelManager = new LevelManager(this.objectMapper.mappedObjects, this.snake);
-        this.drawer = new SnakeDrawer(this.snake, this.levelManager);
-        this.gameLogicDeltaTime = 0;
+        this.drawer = new SnakeDrawer(this.snake, null); //TODO: put back level manager.
     }
 
     _initEvents() {
-        document.addEventListener('keydown', function (eventArgs) {
+        document.addEventListener('keydown', (eventArgs) => {
             let keyName = eventArgs.key;
 
-            if (keyName === 'p') {
-                debugger;
+            const keyMapping = {
+                p: () => {
+                    debugger;
+                },
+                f: this.snake.addFood,
+                m: this.snake.move,
+                i: () => console.log(this.snake.snakeHeadPos),
+            };
+
+            if (keyMapping[keyName]) {
+                keyMapping[keyName].call(this.snake);
             }
 
-            if (keyName === 'f') {
-                this.snake.addFood();
-            }
+            Object.keys(Directions).forEach(direction => {
+                if (Directions[direction].keyMappings.indexOf(keyName) !== -1) {
+                    this.snake.changeDirection(Directions[direction]);
+                }
+            });
+        });
 
-            if (keyName === 'm') {
-                this.snake.move();
-            }
-
-            if (keyName === 'i') {
-                console.log(this.snake.snakeHeadPos);
-            }
-
-            let directionKey = Object.keys(Directions).filter((direction) => Directions[direction].keyMappings.indexOf(keyName) !== -1).pop();
-            if (directionKey) {
-                this.snake.changeDirection(Directions[directionKey]);
-            }
-        }.bind(this));
-
-        window.addEventListener('resize', function () {
-            this.snake.setNewPageSize(PageConstants.PAGE_WIDTH(), PageConstants.PAGE_HEIGHT());
+        window.addEventListener('resize', () => {
+            this.snake.setNewPageSize(PageConstants.GET_PAGE_WIDTH(), PageConstants.GET_PAGE_HEIGHT());
             this.objectMapper.update();
-        }.bind(this));
+        });
     }
 }
 

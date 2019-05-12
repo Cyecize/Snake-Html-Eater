@@ -50,7 +50,7 @@ class ObjectMapper {
     }
 
     static _createPoint2DFromDOMRectangle(elementDOMRectangle) {
-        let coordinates = new Point(elementDOMRectangle.x + PageConstants.PAGE_WIDTH_OFFSET(), elementDOMRectangle.y + PageConstants.PAGE_HEIGHT_OFFSET());
+        let coordinates = new Point(elementDOMRectangle.x + PageConstants.GET_PAGE_WIDTH_OFFSET(), elementDOMRectangle.y + PageConstants.GET_PAGE_HEIGHT_OFFSET());
 
         return new Point2D(coordinates.x, coordinates.y, coordinates.x + elementDOMRectangle.width, coordinates.y + elementDOMRectangle.height);
     }

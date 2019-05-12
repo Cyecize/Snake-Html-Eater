@@ -10,6 +10,7 @@ class Utils {
         let DOMElement = document.createElement('div');
 
         DOMElement.classList.add('snake');
+        DOMElement.classList.add(GameConstants.SMOOTH_SNAKE_CLASS_NAME);
         document.body.appendChild(DOMElement);
 
         return this._finalizeDOMSnakeBody(DOMElement);
@@ -61,5 +62,11 @@ class Utils {
 
     static isDOMElementVisible(elem) {
         return elem.offsetParent !== null;
+    }
+
+    static isPointsSpaceMoreThanSnakeParticle(pointOne, pointTwo) {
+        console.log(Math.abs(pointOne.x - pointTwo.x));
+        return Math.abs(pointOne.x - pointTwo.x) > GameConstants.SNAKE_PARTICLE_SIZE
+            || Math.abs(pointOne.y - pointTwo.y) > GameConstants.SNAKE_PARTICLE_SIZE;
     }
 }
