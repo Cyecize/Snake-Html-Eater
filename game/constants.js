@@ -34,6 +34,7 @@ const GameConstants = {
     IGNORED_HTML_TAGS: ['HTML', 'HEAD', 'LINK', 'SCRIPT', 'STYLE', 'BODY'],
     MAX_SIZE_OF_SMOOTH_SNAKE: 100,
     SMOOTH_SNAKE_CLASS_NAME: 'snake-transition',
+    TEXT_TAG_NAME: 'stext',
 };
 
 const Directions = {

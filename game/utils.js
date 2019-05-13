@@ -65,7 +65,6 @@ class Utils {
     }
 
     static isPointsSpaceMoreThanSnakeParticle(pointOne, pointTwo) {
-        console.log(Math.abs(pointOne.x - pointTwo.x));
         return Math.abs(pointOne.x - pointTwo.x) > GameConstants.SNAKE_PARTICLE_SIZE
             || Math.abs(pointOne.y - pointTwo.y) > GameConstants.SNAKE_PARTICLE_SIZE;
     }
