@@ -1,120 +1,202 @@
+const Direction = {
+    LEFT: {
+        oppositeDirection: 'RIGHT',
+        keyMappings: ['a', 'ArrowLeft'],
+    },
+    UP: {
+        oppositeDirection: 'DOWN',
+        keyMappings: ['w', 'ArrowUp'],
+    },
+    RIGHT: {
+        oppositeDirection: 'LEFT',
+        keyMappings: ['d', 'ArrowRight'],
+    },
+    DOWN: {
+        oppositeDirection: 'UP',
+        keyMappings: ['s', 'ArrowDown'],
+    },
+};
+
+class Position {
+    constructor(point, microPoints) {
+        this.point = point;
+        this.microPoints = microPoints;
+    }
+}
+
+class SnakeBodyPart {
+
+    constructor(position, domElement) {
+        this.position = position;
+        this.domElement = domElement;
+    }
+}
+
 class Snake {
-    constructor(snakeBodySize, maxWidth, maxHeight) {
-        this.setNewPageSize(maxWidth, maxHeight);
-        this.snakeBodySize = snakeBodySize;
-        this._initSnake();
+
+    constructor(head) {
+        this._head = head;
+        this._body = [];
+    }
+
+    addBodyPart(snakeBodyPart) {
+        this._body.push(snakeBodyPart);
+    }
+
+    get coordinates() {
+        return [this.head].concat(this._body);
+    }
+
+    get head() {
+        return this._head;
+    }
+
+    set headPosition(position) {
+        let oldPos = this.head.position;
+        this.head.position = position;
+
+        //swap position of body parts to
+        for (const bodyElement of this._body) {
+            let temp = bodyElement.position;
+            bodyElement.position = oldPos;
+            oldPos = temp;
+        }
+    }
+}
+
+class SnakeManager {
+    constructor(config) {
+        this._config = config;
+        this._init();
     }
 
     move() {
-        let newHeadPos = new Point(this.snakeHeadPos.x, this.snakeHeadPos.y);
+        const oldPoint = this._snake.head.position.point;
+        const newPoint = this._getNextPoint();
+        const microPoints = this._getMicroPoints(oldPoint);
 
-        switch (this.direction) {
-            case Directions.UP:
-                newHeadPos.y = this.snakeHeadPos.y - this.snakeBodySize;
-                if (newHeadPos.y < 0) newHeadPos.y = this.maxHeight - 1;
-                break;
-            case Directions.DOWN:
-                newHeadPos.y = this.snakeHeadPos.y + this.snakeBodySize;
-                if (newHeadPos.y > this.maxHeight) newHeadPos.y = 0;
-                break;
-            case Directions.LEFT:
-                newHeadPos.x = this.snakeHeadPos.x - this.snakeBodySize;
-                if (newHeadPos.x < 0) newHeadPos.x = this.maxWidth - 15;
-                break;
-            case Directions.RIGHT:
-                newHeadPos.x = this.snakeHeadPos.x + this.snakeBodySize;
-                if (newHeadPos.x >= this.maxWidth - 10) newHeadPos.x = 0;
-                break;
-        }
-
-        //TODO check here for collisions with the newHeadPos.
-        //TODO synchronize direction change if required with this.reservedDirectionMove.
-
-        //Checks for body collision.
-        if (this._collidesWithSelf(newHeadPos)) {
-            alert('Snake ate herself!');
-        }
-
-        let currentBodyPosPartPos = this.snakeHeadPos;
-        this.snakeHeadPos = newHeadPos;
-        Snake._handleBodyPartSmoothness(this.snakeHeadDOMElement, currentBodyPosPartPos, newHeadPos);
-
-        //Adjusts food positions and smoothness.
-        for (const snakeBodyPart of this.bodyStack) {
-            const oldSnakeBodyPartCoordinates = snakeBodyPart.coordinates;
-            snakeBodyPart.coordinates = currentBodyPosPartPos;
-            currentBodyPosPartPos = oldSnakeBodyPartCoordinates;
-
-            Snake._handleBodyPartSmoothness(snakeBodyPart.DOMElement, oldSnakeBodyPartCoordinates, snakeBodyPart.coordinates);
-            if (this.bodyStack.length > GameConstants.MAX_SIZE_OF_SMOOTH_SNAKE) {
-                Snake._setSmoothClassForDOMElement(snakeBodyPart.DOMElement, false);
-            }
-        }
-
-        this.lastPerformedDirection = this.direction;
-    }
-
-    addFood() {
-        this.bodyStack.push({
-            coordinates: new Point(-1, -1),
-            DOMElement: Utils.createDOMFood()
-        });
+        //TODO: detect self collision.
+        this._snake.headPosition = new Position(newPoint, microPoints);
+        this._lastPerformedDirection = this._direction;
     }
 
     changeDirection(direction) {
-        if (this.direction.oppositeDirection === direction.name || this.direction === direction ||
-            (this.lastPerformedDirection && this.lastPerformedDirection.oppositeDirection === direction.name)) {
+        const opposite = Direction[direction.oppositeDirection];
+
+        if (opposite === this._direction ||
+            this._direction === direction ||
+            opposite === this._lastPerformedDirection) {
             return;
         }
 
-        this.direction = direction;
+        this._direction = direction;
     }
 
-    setNewPageSize(width, height) {
-        this.maxWidth = width;
-        this.maxHeight = height;
+    addFood() {
+        this._snake.addBodyPart(this._createBodyPart());
     }
 
-    get snakeBody() {
-        return this.bodyStack.concat([{
-            coordinates: this.snakeHeadPos,
-            DOMElement: this.snakeHeadDOMElement,
-        }]);
-    }
-
-    _initSnake() {
-        this.bodyStack = [];
-        this.direction = Directions.RIGHT;
-
-        //Set snake head position.
-        this.snakeHeadPos = new Point(1, 1);
-        this.snakeHeadDOMElement = Utils.createDOMHead();
-
-        //Add initial food tail.
+    _init() {
+        this._snake = new Snake(this._createHead());
+        this._direction = Direction.RIGHT;
+        this._lastPerformedDirection = this._direction;
         this.addFood();
         this.addFood();
         this.addFood();
     }
 
-    _collidesWithSelf(newSnakePos) {
-        for (let foodStackElement of this.bodyStack) {
-            if (newSnakePos.x === foodStackElement.coordinates.x && newSnakePos.y === foodStackElement.coordinates.y) {
-                return true;
-            }
+    _createHead() {
+        const position = this._createPosition(10, 10);
+        const domElement = DomUtils.createDOMHead();
+
+        return new SnakeBodyPart(position, domElement);
+    }
+
+    _createBodyPart() {
+        const position = this._createPosition();
+        const domElement = DomUtils.createDOMFood();
+
+        return new SnakeBodyPart(position, domElement);
+    }
+
+    _createPosition(x, y) {
+        const frames = this._config.fps;
+
+        const point = new Point(x ?? -100, y ?? 0);
+        const microPositions = [];
+
+        for (let i = 0; i < frames; i++) {
+            microPositions.push(point);
         }
 
-        return false;
+        return new Position(point, microPositions);
     }
 
-    static _handleBodyPartSmoothness(domElement, currentPoint, newPoint) {
-        Snake._setSmoothClassForDOMElement(domElement, !Utils.isPointsSpaceMoreThanSnakeParticle(currentPoint, newPoint));
-    }
+    _getNextPoint() {
+        const snakeHeadPos = this._snake.head.position.point;
+        const pageHeight = DomUtils.getPageHeight();
+        const pageWidth = DomUtils.getPageWidth();
 
-    static _setSmoothClassForDOMElement(domElement, isClassPresent) {
-        if (isClassPresent) {
-            domElement.classList.add(GameConstants.SMOOTH_SNAKE_CLASS_NAME);
-        } else {
-            domElement.classList.remove(GameConstants.SMOOTH_SNAKE_CLASS_NAME);
+        let newHeadPos = new Point(snakeHeadPos.x, snakeHeadPos.y);
+
+        switch (this._direction) {
+            case Direction.UP:
+                newHeadPos.y = snakeHeadPos.y - Constants.SNAKE_SIZE;
+                if (newHeadPos.y < 0) newHeadPos.y = pageHeight - Constants.SNAKE_SIZE;
+                break;
+            case Direction.DOWN:
+                newHeadPos.y = snakeHeadPos.y + Constants.SNAKE_SIZE;
+                if (newHeadPos.y > pageHeight - Constants.SNAKE_SIZE - 10) newHeadPos.y = 0;
+                break;
+            case Direction.LEFT:
+                newHeadPos.x = snakeHeadPos.x - Constants.SNAKE_SIZE;
+                if (newHeadPos.x < 0) newHeadPos.x = pageWidth - Constants.SNAKE_SIZE;
+                break;
+            case Direction.RIGHT:
+                newHeadPos.x = snakeHeadPos.x + Constants.SNAKE_SIZE;
+                if (newHeadPos.x >= pageWidth - Constants.SNAKE_SIZE - 10) newHeadPos.x = 0;
+                break;
         }
+
+        return newHeadPos;
+    }
+
+    _getMicroPoints(oldPoint) {
+        const numberOfPositions = this._config.fps;
+        const interval = Constants.SNAKE_SIZE / numberOfPositions;
+
+        let appendX = 0;
+        let appendY = 0;
+
+        switch (this._direction) {
+            case Direction.UP:
+                appendY -= interval;
+                break;
+            case Direction.DOWN:
+                appendY += interval;
+                break;
+            case Direction.LEFT:
+                appendX -= interval;
+                break;
+            case Direction.RIGHT:
+                appendX += interval;
+                break;
+        }
+
+        let currentX = oldPoint.x;
+        let currentY = oldPoint.y;
+
+        let microPositions = [];
+
+        for (let i = 0; i < numberOfPositions; i++) {
+            currentX += appendX;
+            currentY += appendY;
+
+            microPositions.push(
+                new Point(currentX, currentY)
+            );
+        }
+
+        return microPositions;
     }
 }

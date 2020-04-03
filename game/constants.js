@@ -1,9 +1,6 @@
-const PageConstants = {
-    GET_PAGE_WIDTH: () => document.documentElement.scrollWidth,
-    GET_PAGE_HEIGHT: () => document.documentElement.scrollHeight,
-    GET_PAGE_WIDTH_OFFSET: () => window.pageXOffset,
-    GET_PAGE_HEIGHT_OFFSET: () => window.pageYOffset,
-    ELEMENT_SIZE_DIMENSION_TYPE: 'px',
+const Constants = {
+    SNAKE_SIZE: 17,
+    DIMENSION_TYPE: 'px',
 };
 
 const StyleConstants = {
@@ -26,38 +23,4 @@ const StyleConstants = {
         document.getElementsByTagName('head')[0].appendChild(style);
         return style;
     }(),
-};
-
-const GameConstants = {
-    SNAKE_PARTICLE_SIZE: 15,
-    SNAKE_REFRESH_MILLIS: 50,
-    IGNORED_HTML_TAGS: ['HTML', 'HEAD', 'LINK', 'SCRIPT', 'STYLE', 'BODY'],
-    MAX_SIZE_OF_SMOOTH_SNAKE: 100,
-    SMOOTH_SNAKE_CLASS_NAME: 'snake-transition',
-    TEXT_TAG_NAME: 'st',
-    TEXT_CONTAINER_TAG_NAME: 'span',
-    TEXT_NODE_TYPE: 3,
-};
-
-const Directions = {
-    LEFT: {
-        oppositeDirection: 'right',
-        name: 'left',
-        keyMappings: ['a', 'ArrowLeft'],
-    },
-    UP: {
-        oppositeDirection: 'down',
-        name: 'up',
-        keyMappings: ['w', 'ArrowUp'],
-    },
-    RIGHT: {
-        oppositeDirection: 'left',
-        name: 'right',
-        keyMappings: ['d', 'ArrowRight'],
-    },
-    DOWN: {
-        oppositeDirection: 'up',
-        name: 'down',
-        keyMappings: ['s', 'ArrowDown'],
-    },
 };
