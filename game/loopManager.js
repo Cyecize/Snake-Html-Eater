@@ -1,22 +1,13 @@
-class Config {
-    constructor(fps, tickMillis) {
-        this.fps = fps;
-        this.tickMillis = tickMillis;
-    }
-}
-
 /**
  * This class is responsible for managing the application's loops.
  */
 class LoopManager {
 
     /**
-     * @param operationCallback - function that accepts 2 params - frameNumber, hasFullTick.
-     * @param config - config containing specified FPS.
+     * @param operationCallback - function that accepts 2 params - fullFramePercentage, frames per tick (fpt).
      */
-    constructor(operationCallback, config) {
+    constructor(operationCallback) {
         this._operation = operationCallback;
-        this._config = config;
     }
 
     run() {
@@ -29,13 +20,6 @@ class LoopManager {
         this._running = false;
     }
 
-    /**
-     * Requests animation frames.
-     * Since frames are more that the specified, a logic to limit them is applied.
-     * If 60 FPS is set, the callback will be called 60 times at equal intervals.
-     *
-     * On every passed second, the hasFullTick variable will be true.
-     */
     _loop() {
         window.requestAnimationFrame((time) => {
             if (!this._running) {
@@ -43,30 +27,26 @@ class LoopManager {
             }
 
             this._loop();
+            this._currentTickFrameCount++;
 
             const now = this._getNow();
-            const elapsed = now - this._then;
+            const elapsed = now - this._previousSecond;
 
-            if (elapsed > this._fpsInterval) {
-                this._then = now - (elapsed % this._fpsInterval);
-                const hasFullTick = (now - this._lastTick) % this._config.tickMillis < this._fpsInterval;
-
-                this._operation(this._frameCount, hasFullTick);
-
-                if (hasFullTick) {
-                    this._frameCount = 0;
-                } if (this._frameCount < this._config.fps - 1) {
-                    this._frameCount++;
-                }
+            if (elapsed >= Constants.FULL_TICK_MILLIS) {
+                this._operation(100, this._currentTickFrameCount);
+                this._previousTickFrameCount = this._currentTickFrameCount;
+                this._currentTickFrameCount = 0;
+                this._previousSecond = now;
+            } else {
+                this._operation(Math.round(elapsed / Constants.FULL_TICK_MILLIS * 100), this._previousTickFrameCount);
             }
         });
     }
 
     _initLoop() {
-        this._fpsInterval = this._config.tickMillis / this._config.fps;
-        this._then = this._getNow();
-        this._lastTick = this._then;
-        this._frameCount = 0;
+        this._previousSecond = this._getNow();
+        this._currentTickFrameCount = 0;
+        this._previousTickFrameCount = 0;
     }
 
     _getNow() {

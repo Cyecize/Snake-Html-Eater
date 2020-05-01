@@ -18,9 +18,13 @@ const Direction = {
 };
 
 class Position {
-    constructor(point, microPoints) {
+    constructor(point, microPositions) {
         this.point = point;
-        this.microPoints = microPoints;
+        this.microPositions = microPositions;
+    }
+
+    getMicroPosition(numberOfMicroPosition) {
+        return this.microPositions[numberOfMicroPosition];
     }
 }
 
@@ -65,8 +69,7 @@ class Snake {
 }
 
 class SnakeManager {
-    constructor(config) {
-        this._config = config;
+    constructor() {
         this._init();
     }
 
@@ -96,6 +99,14 @@ class SnakeManager {
         this._snake.addBodyPart(this._createBodyPart());
     }
 
+    getNumberOfMicroPosition(framePercentage) {
+        return  Math.max(0, Math.floor(framePercentage / 100 * Constants.MICRO_POSITIONS_PER_SECOND) - 1);
+    }
+
+    get snakeCoordinates() {
+        return this._snake.coordinates;
+    }
+
     _init() {
         this._snake = new Snake(this._createHead());
         this._direction = Direction.RIGHT;
@@ -120,7 +131,7 @@ class SnakeManager {
     }
 
     _createPosition(x, y) {
-        const frames = this._config.fps;
+        const frames = Constants.MICRO_POSITIONS_PER_SECOND;
 
         const point = new Point(x ?? -100, y ?? 0);
         const microPositions = [];
@@ -162,7 +173,7 @@ class SnakeManager {
     }
 
     _getMicroPoints(oldPoint) {
-        const numberOfPositions = this._config.fps;
+        const numberOfPositions = Constants.MICRO_POSITIONS_PER_SECOND;
         const interval = Constants.SNAKE_SIZE / numberOfPositions;
 
         let appendX = 0;

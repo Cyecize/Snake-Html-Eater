@@ -1,43 +1,42 @@
-const FPS = 12;
-const TICK_RATE = 150;
 
-const config = new Config(FPS, TICK_RATE);
-const snakeManager = new SnakeManager(config);
-const drawer = new Drawer(snakeManager._snake);
+const snakeManager = new SnakeManager();
+const drawer = new Drawer(snakeManager);
 
 const loopManager = new LoopManager(
-    (frameNumber, hasFullTick) => {
-        drawer.draw(frameNumber);
+    (framePercentage, framesPerTick) => {
+        drawer.draw(framePercentage, framesPerTick);
 
-        if (hasFullTick) {
+        if (framePercentage === 100) {
+            console.log(framesPerTick);
             snakeManager.move();
         }
-    },
-    config
+    }
 );
 
 loopManager.run();
 
-let snake = snakeManager;
+
 document.addEventListener('keydown', (eventArgs) => {
     let keyName = eventArgs.key;
 
     const keyMapping = {
         p: () => {
-            debugger;
+            loopManager.pause();
+           // debugger;
         },
-        f: snake.addFood,
-        m: snake.move,
-        i: () => console.log(snake.snakeHeadPos),
+        r: () => loopManager.run(),
+        f: snakeManager.addFood,
+        m: snakeManager.move,
+        i: () => console.log(snakeManager._snake.head),
     };
 
     if (keyMapping[keyName]) {
-        keyMapping[keyName].call(snake);
+        keyMapping[keyName].call(snakeManager);
     }
 
     Object.keys(Direction).forEach(direction => {
         if (Direction[direction].keyMappings.indexOf(keyName) !== -1) {
-            snake.changeDirection(Direction[direction]);
+            snakeManager.changeDirection(Direction[direction]);
         }
     });
 });

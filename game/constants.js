@@ -1,6 +1,8 @@
 const Constants = {
+    FULL_TICK_MILLIS: 100,
     SNAKE_SIZE: 17,
     DIMENSION_TYPE: 'px',
+    MICRO_POSITIONS_PER_SECOND: 60
 };
 
 const StyleConstants = {
