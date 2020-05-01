@@ -2,7 +2,8 @@ const Constants = {
     FULL_TICK_MILLIS: 100,
     SNAKE_SIZE: 17,
     DIMENSION_TYPE: 'px',
-    MICRO_POSITIONS_PER_SECOND: 60
+    MICRO_POSITIONS_PER_SECOND: 60,
+    INITIAL_SNAKE_BODY_SIZE: 4
 };
 
 const StyleConstants = {

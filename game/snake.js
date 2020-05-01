@@ -111,9 +111,9 @@ class SnakeManager {
         this._snake = new Snake(this._createHead());
         this._direction = Direction.RIGHT;
         this._lastPerformedDirection = this._direction;
-        this.addFood();
-        this.addFood();
-        this.addFood();
+        for (let i = 0; i < Constants.INITIAL_SNAKE_BODY_SIZE; i++) {
+            this.addFood();
+        }
     }
 
     _createHead() {
