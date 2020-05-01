@@ -60,7 +60,8 @@ class Snake {
         this.head.position = position;
 
         //swap position of body parts to
-        for (const bodyElement of this._body) {
+        for (let i = 0; i < this._body.length; i++) {
+            let bodyElement = this._body[i];
             let temp = bodyElement.position;
             bodyElement.position = oldPos;
             oldPos = temp;
@@ -100,7 +101,7 @@ class SnakeManager {
     }
 
     getNumberOfMicroPosition(framePercentage) {
-        return  Math.max(0, Math.floor(framePercentage / 100 * Constants.MICRO_POSITIONS_PER_SECOND) - 1);
+        return Math.max(0, Math.floor(framePercentage / 100 * Constants.MICRO_POSITIONS_PER_SECOND) - 1);
     }
 
     get snakeCoordinates() {
