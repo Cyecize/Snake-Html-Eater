@@ -18,11 +18,7 @@ class Drawer {
 
             const coordinates = bodyElement.position.getMicroPosition(numberOfMicroPosition);
             const domElement = bodyElement.domElement;
-
-            if (!coordinates) {
-                console.log(numberOfMicroPosition);
-            }
-
+            
             if (domElement.style.left !== coordinates.x) {
                 domElement.style.left = coordinates.x + Constants.DIMENSION_TYPE;
             }
