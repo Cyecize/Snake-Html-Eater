@@ -4,8 +4,8 @@ class Drawer {
         this._previousPercentage = -1;
     }
 
-    draw(framePercentage, fps) {
-        if (this._previousPercentage === framePercentage) {
+    draw(framePercentage, fps, forceDraw) {
+        if (this._previousPercentage === framePercentage && !forceDraw) {
             return;
         }
 

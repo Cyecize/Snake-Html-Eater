@@ -26,7 +26,10 @@ document.addEventListener('keydown', (eventArgs) => {
         },
         r: () => loopManager.run(),
         f: snakeManager.addFood,
-        m: snakeManager.move,
+        m: () => {
+			snakeManager.move();
+			drawer.draw(100, 60, true);
+		},
         i: () => console.log(snakeManager._snake.head),
     };
 
