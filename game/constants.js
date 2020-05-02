@@ -1,23 +1,25 @@
 const Constants = {
-    FULL_TICK_MILLIS: 100,
-    SNAKE_SIZE: 17,
+    FULL_TICK_MILLIS: 90,
+    SNAKE_SIZE: 14,
     DIMENSION_TYPE: 'px',
     MICRO_POSITIONS_PER_SECOND: 60,
-    INITIAL_SNAKE_BODY_SIZE: 4
+    INITIAL_SNAKE_BODY_SIZE: 20
 };
 
 const StyleConstants = {
     SNAKE_BODY_STYLE: function () {
+        const SNAKE_BODY_BACKGROUNDS = [
+            'linear-gradient(rgba(238, 130, 238, 0.7), rgba(0, 0, 0, 0.8));',
+            'linear-gradient(rgba(113, 24, 82, 1), rgba(255, 165, 0, 0.9), rgba(9, 16, 104, 1));',
+        ];
+
         let style = document.createElement('style');
-        style.type = 'text/css';
+        style.setAttribute("type", "text/css");
         style.innerHTML = '.snake, .snake-head {' +
-            'background: linear-gradient( rgb(113,24,82), rgba(255, 165, 0, 0.9), rgb(9,16,104));' +
-            ' border-radius: 5px;z-index: 100000;position: absolute;' +
+            'background: ' + SNAKE_BODY_BACKGROUNDS[Math.floor(Math.random() * SNAKE_BODY_BACKGROUNDS.length)] +
+            ' border-radius: 6px;z-index: 100000;position: absolute;' +
             '} .snake-head {' +
-            'background: radial-gradient(black, white); border-radius: 15px' +
-            '}' +
-            '.snake-transition {\n' +
-            '    transition: left 50ms linear, top 50ms linear;\n' +
+            'background: radial-gradient(rgba(255, 0, 0, 1), rgba(0, 0, 0, 1)); border-radius: 50%' +
             '}' +
             '.snake-html-scoreboard {' +
             'position: fixed;top: 50px;right: 50px;padding: 10px;box-sizing: border-box;' +
