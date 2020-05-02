@@ -3,7 +3,8 @@ const Constants = {
     SNAKE_SIZE: 14,
     DIMENSION_TYPE: 'px',
     MICRO_POSITIONS_PER_SECOND: 60,
-    INITIAL_SNAKE_BODY_SIZE: 20
+    INITIAL_SNAKE_BODY_SIZE: 5,
+    CHECK_FOR_SELF_COLLISION: true,
 };
 
 const StyleConstants = {

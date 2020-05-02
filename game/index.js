@@ -7,8 +7,15 @@ const loopManager = new LoopManager(
         drawer.draw(framePercentage, framesPerTick);
 
         if (framePercentage === 100) {
-            console.log(framesPerTick);
-            snakeManager.move();
+            console.log(framesPerTick * 1000 / Constants.FULL_TICK_MILLIS);
+            try {
+                snakeManager.move();
+            } catch (err) {
+                if (err instanceof SnakeAteHerselfException) {
+                    alert("Snake ate herself!");
+                    loopManager.pause();
+                }
+            }
         }
     }
 );

@@ -26,6 +26,10 @@ class Position {
     getMicroPosition(numberOfMicroPosition) {
         return this.microPositions[numberOfMicroPosition];
     }
+
+    collidesWith(point) {
+        return this.point.equals(point);
+    }
 }
 
 class SnakeBodyPart {
@@ -34,6 +38,10 @@ class SnakeBodyPart {
         this.position = position;
         this.domElement = domElement;
     }
+}
+
+class SnakeAteHerselfException extends Error {
+
 }
 
 class Snake {
@@ -49,6 +57,10 @@ class Snake {
 
     get coordinates() {
         return [this.head].concat(this._body);
+    }
+
+    get bodyCoordinates() {
+        return this._body;
     }
 
     get head() {
@@ -79,7 +91,10 @@ class SnakeManager {
         const newPoint = this._getNextPoint();
         const microPoints = this._getMicroPoints(oldPoint);
 
-        //TODO: detect self collision.
+        if (Constants.CHECK_FOR_SELF_COLLISION) {
+            this._checkSelfCollision(newPoint);
+        }
+
         this._snake.headPosition = new Position(newPoint, microPoints);
         this._lastPerformedDirection = this._direction;
     }
@@ -210,5 +225,16 @@ class SnakeManager {
         }
 
         return microPositions;
+    }
+
+    _checkSelfCollision(newPoint) {
+        const body = this._snake.bodyCoordinates;
+
+        for (let i = 0; i < body.length; i++) {
+            const bodyPart = body[i];
+            if (bodyPart.position.collidesWith(newPoint)) {
+                throw new SnakeAteHerselfException();
+            }
+        }
     }
 }
